@@ -1,1 +1,12 @@
-
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/communal-services
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
