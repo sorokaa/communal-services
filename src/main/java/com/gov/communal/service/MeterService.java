@@ -75,6 +75,9 @@ public class MeterService {
             if (i != meters.size() - 1) {
                 Meter prevMeter = meters.get(i + 1);
                 long loanValue = value - prevMeter.getValue();
+                if (loanValue == 0) {
+                    continue;
+                }
                 loanPrice = BigDecimal.valueOf(loanValue).multiply(price);
             } else {
                 loanPrice = BigDecimal.valueOf(value).multiply(price);
