@@ -19,8 +19,8 @@ public interface GasPriceRepository extends JpaRepository<GasPrice, Long> {
     GasPrice getCurrent();
 
     @Query("""
-                FROM ElectricityPrice eb
-                ORDER BY eb.created DESC
+                FROM GasPrice gp
+                ORDER BY gp.created DESC
             """)
     List<GasPrice> findAllByNew();
 
