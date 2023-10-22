@@ -2,11 +2,14 @@ package com.gov.communal.service;
 
 import com.gov.communal.model.meter.enumeration.ExportTextCode;
 import com.gov.communal.util.error.ValidationErrorCode;
+import com.gov.communal.util.i18n.LanguageHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
+
+import static com.gov.communal.util.i18n.Language.ENGLISH;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +26,8 @@ public class LocalizedMessageService {
     }
 
     private Locale getLocale() {
-//        return new Random().nextBoolean()
-//                ? Locale.ENGLISH
-//                : new Locale("ua");
-        return new Locale("ua");
-//        return Locale.ENGLISH;
+        return ENGLISH == LanguageHolder.getLanguage()
+                ? Locale.ENGLISH
+                : new Locale("ua");
     }
 }
