@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/admin/prices")
 @RequiredArgsConstructor
-public class AdminBillController {
+public class AdminPriceController {
 
     private final ElectricityPriceService electricityPriceService;
     private final GasPriceService gasPriceService;
