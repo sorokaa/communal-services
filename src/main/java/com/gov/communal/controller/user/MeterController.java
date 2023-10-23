@@ -3,6 +3,7 @@ package com.gov.communal.controller.user;
 import com.gov.communal.model.meter.dto.MeterPaymentResponse;
 import com.gov.communal.model.meter.dto.MeterResponse;
 import com.gov.communal.model.meter.request.CreateMeterRequest;
+import com.gov.communal.security.SecurityUtil;
 import com.gov.communal.service.MeterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
@@ -22,13 +24,16 @@ import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 @RestController
 @RequestMapping("/api/v1/meters")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority(@authorities.CLIENT)")
 public class MeterController {
 
     private final MeterService meterService;
 
     @PostMapping
     public MeterResponse create(@RequestBody CreateMeterRequest request) {
-        return meterService.create(request);
+        UUID userId = SecurityUtil.getUserId();
+        log.debug("Request to create meter. Request: {}, User: {}", request, userId);
+        return meterService.create(request, userId);
     }
 
     @PatchMapping("/{meterId}/payed")
@@ -42,7 +47,8 @@ public class MeterController {
     }
 
     @GetMapping("/loan/export")
-    public ResponseEntity<byte[]> exportLoan(@RequestParam UUID userId) {
+    public ResponseEntity<byte[]> exportLoan() {
+        UUID userId = SecurityUtil.getUserId();
         byte[] file = meterService.exportLoans(userId);
         String filename = "report.pdf";
         HttpHeaders headers = new HttpHeaders();

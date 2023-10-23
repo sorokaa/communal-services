@@ -8,6 +8,7 @@ import com.gov.communal.service.PriceService;
 import com.gov.communal.service.ElectricityPriceService;
 import com.gov.communal.service.GasPriceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/prices")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority(@authorities.CLIENT)")
 public class PriceController {
 
     private final PriceService service;

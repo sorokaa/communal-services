@@ -8,6 +8,7 @@ import com.gov.communal.service.ElectricityPriceService;
 import com.gov.communal.service.GasPriceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/admin/prices")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority(@authorities.ADMIN)")
 public class AdminPriceController {
 
     private final ElectricityPriceService electricityPriceService;

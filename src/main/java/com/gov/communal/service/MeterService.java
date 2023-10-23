@@ -38,10 +38,11 @@ public class MeterService {
     private final LoanExportHelper exportHelper;
 
     @Transactional
-    public MeterResponse create(CreateMeterRequest request) {
-        validator.validateCreate(request);
+    public MeterResponse create(CreateMeterRequest request, UUID userId) {
+        validator.validateCreate(request, userId);
         Meter meter = mapper.toEntity(request);
-        BigDecimal payment = getPayment(request);
+        meter.setUserId(userId);
+        BigDecimal payment = getPayment(request, userId);
         meterRepository.save(meter);
         return mapper.toResponse(meter, payment);
     }
@@ -108,15 +109,16 @@ public class MeterService {
     @Transactional
     public byte[] exportLoans(UUID userId) {
         MeterPaymentResponse loan = getPaymentsLoan(userId);
+
         return exportHelper.export(loan);
     }
 
-    private BigDecimal getPayment(CreateMeterRequest request) {
+    private BigDecimal getPayment(CreateMeterRequest request, UUID userId) {
         Communal communal = request.getCommunal();
         BigDecimal price = communal == ELECTRICITY
                 ? electricityPriceService.getCurrentPrice()
                 : gasPriceService.getCurrentPrice();
-        Optional<Meter> latest = meterRepository.getLatest(request.getUserId(), communal);
+        Optional<Meter> latest = meterRepository.getLatest(userId, communal);
         if (latest.isEmpty()) {
             return BigDecimal.valueOf(request.getValue())
                     .multiply(price);

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -16,12 +17,12 @@ public class MeterValidator {
 
     private final MeterRepository repository;
 
-    public void validateCreate(CreateMeterRequest request) {
-        validateValue(request);
+    public void validateCreate(CreateMeterRequest request, UUID userId) {
+        validateValue(request, userId);
     }
 
-    private void validateValue(CreateMeterRequest request) {
-        Optional<Meter> latest = repository.getLatest(request.getUserId(), request.getCommunal());
+    private void validateValue(CreateMeterRequest request, UUID userId) {
+        Optional<Meter> latest = repository.getLatest(userId, request.getCommunal());
         if (latest.isEmpty()) {
             return;
         }
