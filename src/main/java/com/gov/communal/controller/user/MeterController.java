@@ -38,17 +38,21 @@ public class MeterController {
 
     @PatchMapping("/{meterId}/payed")
     public void payedMeter(@PathVariable Long meterId) {
+        log.debug("Request to pay meter. ID: {}", meterId);
         meterService.payedMeter(meterId);
     }
 
     @GetMapping("/loan")
-    public MeterPaymentResponse getLoans(@RequestParam UUID userId) {
+    public MeterPaymentResponse getLoans() {
+        UUID userId = SecurityUtil.getUserId();
+        log.debug("Request to get user loans. ID: {}", userId);
         return meterService.getPaymentsLoan(userId);
     }
 
     @GetMapping("/loan/export")
     public ResponseEntity<byte[]> exportLoan() {
         UUID userId = SecurityUtil.getUserId();
+        log.debug("Request to export user loans. User ID: {}", userId);
         byte[] file = meterService.exportLoans(userId);
         String filename = "report.pdf";
         HttpHeaders headers = new HttpHeaders();

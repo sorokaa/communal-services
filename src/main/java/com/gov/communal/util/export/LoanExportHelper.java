@@ -1,5 +1,6 @@
 package com.gov.communal.util.export;
 
+import com.gov.communal.model.auth.client.dto.ClientDto;
 import com.gov.communal.model.meter.dto.MeterPaymentResponse;
 import com.gov.communal.model.meter.dto.Payment;
 import com.gov.communal.model.meter.enumeration.Communal;
@@ -42,19 +43,42 @@ public class LoanExportHelper {
 
     private final LocalizedMessageService messageService;
 
-    public byte[] export(MeterPaymentResponse loan) {
+    public byte[] export(MeterPaymentResponse loan, ClientDto client) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (Document document = new Document()) {
             PdfWriter.getInstance(document, out);
             document.open();
-            generateExport(loan, document);
+            generateExport(loan, client, document);
         }
         return out.toByteArray();
     }
 
-    private void generateExport(MeterPaymentResponse loan, Document document) {
+    private void generateExport(MeterPaymentResponse loan, ClientDto client, Document document) {
+        generatePersonalInfo(client, document);
         generateGasLoan(loan, document);
         generateElectricityLoan(loan, document);
+    }
+
+    private void generatePersonalInfo(ClientDto client, Document document) {
+        Font headFont = ExportUtil.getFont(MONTSERRAT_REGULAR, PAGE_HEAD_FONT_SIZE);
+        Paragraph personalInfo = new Paragraph(messageService.get(PERSONAL_INFO_HEADER), headFont);
+        document.add(personalInfo);
+
+        Font textFont = ExportUtil.getFont(MONTSERRAT_REGULAR, REGULAR_FONT_SIZE);
+
+        addText(messageService.get(LAST_NAME), client.getLastName(), textFont, document);
+        addText(messageService.get(FIRST_NAME), client.getFirstName(), textFont, document);
+        addText(messageService.get(PATRONYMIC), client.getPatronymic(), textFont, document);
+        addText(messageService.get(CITY), client.getCity().getValue(), textFont, document);
+        addText(messageService.get(STREET), client.getStreet().getValue(), textFont, document);
+        addText(messageService.get(HOUSE_NUMBER), client.getHouseNumber(), textFont, document);
+        addText(messageService.get(EMAIL), client.getEmail(), textFont, document);
+    }
+
+    private void addText(String field, String text, Font font, Document document) {
+        String result = field + ": " + text;
+        Paragraph paragraph = new Paragraph(result, font);
+        document.add(paragraph);
     }
 
     private void generateElectricityLoan(MeterPaymentResponse loan, Document document) {
@@ -68,6 +92,7 @@ public class LoanExportHelper {
     }
 
     private void generateGasLoan(MeterPaymentResponse loan, Document document) {
+        document.newPage();
         generateHeader(document, GAS);
         List<Payment> payments = loan.getGasPayments();
         if (!payments.isEmpty()) {

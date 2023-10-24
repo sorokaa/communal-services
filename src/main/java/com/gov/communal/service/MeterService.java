@@ -1,6 +1,7 @@
 package com.gov.communal.service;
 
 import com.gov.communal.exception.ValidationException;
+import com.gov.communal.model.auth.client.dto.ClientDto;
 import com.gov.communal.model.meter.dto.MeterPaymentResponse;
 import com.gov.communal.model.meter.dto.MeterResponse;
 import com.gov.communal.model.meter.dto.Payment;
@@ -9,6 +10,7 @@ import com.gov.communal.model.meter.enumeration.Communal;
 import com.gov.communal.model.meter.mapper.MeterMapper;
 import com.gov.communal.model.meter.request.CreateMeterRequest;
 import com.gov.communal.repository.MeterRepository;
+import com.gov.communal.security.SecurityUtil;
 import com.gov.communal.util.error.ValidationErrorCode;
 import com.gov.communal.util.export.LoanExportHelper;
 import com.gov.communal.util.validator.MeterValidator;
@@ -36,6 +38,7 @@ public class MeterService {
     private final MeterMapper mapper;
     private final MeterValidator validator;
     private final LoanExportHelper exportHelper;
+    private final ClientService clientService;
 
     @Transactional
     public MeterResponse create(CreateMeterRequest request, UUID userId) {
@@ -58,6 +61,35 @@ public class MeterService {
                 .electricityPayments(electricityPayments)
                 .gasPayments(gasPayments)
                 .build();
+    }
+
+    @Transactional
+    public void payedMeter(Long meterId) {
+        Meter meter = meterRepository.findById(meterId)
+                .orElseThrow(() -> new ValidationException(ValidationErrorCode.METER_NOT_FOUND));
+        meter.setPayed(true);
+    }
+
+    @Transactional
+    public byte[] exportLoans(UUID userId) {
+        MeterPaymentResponse loan = getPaymentsLoan(userId);
+        ClientDto client = clientService.getById(SecurityUtil.getUserId());
+        return exportHelper.export(loan, client);
+    }
+
+    private BigDecimal getPayment(CreateMeterRequest request, UUID userId) {
+        Communal communal = request.getCommunal();
+        BigDecimal price = communal == ELECTRICITY
+                ? electricityPriceService.getCurrentPrice()
+                : gasPriceService.getCurrentPrice();
+        Optional<Meter> latest = meterRepository.getLatest(userId, communal);
+        if (latest.isEmpty()) {
+            return BigDecimal.valueOf(request.getValue())
+                    .multiply(price);
+        }
+        Long latestValue = latest.get().getValue();
+        return BigDecimal.valueOf(request.getValue() - latestValue)
+                .multiply(price);
     }
 
     private List<Payment> getPayments(List<Meter> meters) {
@@ -97,34 +129,5 @@ public class MeterService {
         return meter.getCommunal() == ELECTRICITY
                 ? electricityPriceService.getPriceByDate(created)
                 : gasPriceService.getPriceByDate(created);
-    }
-
-    @Transactional
-    public void payedMeter(Long meterId) {
-        Meter meter = meterRepository.findById(meterId)
-                .orElseThrow(() -> new ValidationException(ValidationErrorCode.METER_NOT_FOUND));
-        meter.setPayed(true);
-    }
-
-    @Transactional
-    public byte[] exportLoans(UUID userId) {
-        MeterPaymentResponse loan = getPaymentsLoan(userId);
-
-        return exportHelper.export(loan);
-    }
-
-    private BigDecimal getPayment(CreateMeterRequest request, UUID userId) {
-        Communal communal = request.getCommunal();
-        BigDecimal price = communal == ELECTRICITY
-                ? electricityPriceService.getCurrentPrice()
-                : gasPriceService.getCurrentPrice();
-        Optional<Meter> latest = meterRepository.getLatest(userId, communal);
-        if (latest.isEmpty()) {
-            return BigDecimal.valueOf(request.getValue())
-                    .multiply(price);
-        }
-        Long latestValue = latest.get().getValue();
-        return BigDecimal.valueOf(request.getValue() - latestValue)
-                .multiply(price);
     }
 }

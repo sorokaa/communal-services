@@ -21,7 +21,8 @@ public enum ValidationErrorCode {
     INVALID_EMAIL("user.email.invalid"),
     USER_ALREADY_EXISTS("user.already.exists"),
     PASSWORD_IS_NULL("user.password.is.null"),
-    INVALID_PASSWORD("user.invalid.password");
+    INVALID_PASSWORD("user.invalid.password"),
+    CLIENT_NOT_FOUND("client.not.found");
 
     private final String messagePath;
 }
