@@ -1,4 +1,4 @@
-package com.gov.communal.service;
+package com.gov.communal.service.dictionary;
 
 import com.gov.communal.exception.ValidationException;
 import com.gov.communal.model.dictionary.dto.CityDto;

@@ -2,7 +2,7 @@ package com.gov.communal.controller.auth;
 
 import com.gov.communal.model.auth.client.dto.ClientDto;
 import com.gov.communal.model.auth.client.request.CreateUserRequest;
-import com.gov.communal.service.AuthService;
+import com.gov.communal.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -4,7 +4,7 @@ import com.gov.communal.model.meter.dto.MeterPaymentResponse;
 import com.gov.communal.model.meter.dto.MeterResponse;
 import com.gov.communal.model.meter.request.CreateMeterRequest;
 import com.gov.communal.security.SecurityUtil;
-import com.gov.communal.service.MeterService;
+import com.gov.communal.service.communal.MeterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ContentDisposition;

@@ -1,4 +1,4 @@
-package com.gov.communal.service;
+package com.gov.communal.service.communal;
 
 import com.gov.communal.model.price.common.dto.PriceStatistic;
 import com.gov.communal.model.price.electricity.dto.ElectricityPriceDto;
@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
@@ -47,6 +48,7 @@ public class ElectricityPriceService {
                 .toList();
     }
 
+    @Nullable
     @Transactional(readOnly = true)
     public BigDecimal getCurrentPrice() {
         ElectricityPriceDto current = getCurrent();

@@ -1,4 +1,4 @@
-package com.gov.communal.service;
+package com.gov.communal.service.communal;
 
 import com.gov.communal.model.price.common.dto.PriceStatistic;
 import com.gov.communal.model.price.electricity.entity.ElectricityPrice;
@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
@@ -41,6 +42,7 @@ public class GasPriceService {
         return mapper.toDto(repository.getCurrent());
     }
 
+    @Nullable
     @Transactional(readOnly = true)
     public BigDecimal getCurrentPrice() {
         GasPriceDto current = getCurrent();

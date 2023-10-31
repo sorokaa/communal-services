@@ -1,4 +1,4 @@
-package com.gov.communal.service;
+package com.gov.communal.service.auth;
 
 import com.gov.communal.model.auth.client.dto.ClientDto;
 import com.gov.communal.model.auth.client.entity.Client;

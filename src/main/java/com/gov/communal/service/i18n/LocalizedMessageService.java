@@ -1,7 +1,8 @@
-package com.gov.communal.service;
+package com.gov.communal.service.i18n;
 
 import com.gov.communal.model.meter.enumeration.ExportTextCode;
 import com.gov.communal.util.error.ValidationErrorCode;
+import com.gov.communal.util.i18n.Language;
 import com.gov.communal.util.i18n.LanguageHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -28,6 +29,6 @@ public class LocalizedMessageService {
     private Locale getLocale() {
         return ENGLISH == LanguageHolder.getLanguage()
                 ? Locale.ENGLISH
-                : new Locale("ua");
+                : new Locale(Language.UKRAINIAN.getCode());
     }
 }

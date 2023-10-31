@@ -1,7 +1,7 @@
 package com.gov.communal.controller.exception;
 
 import com.gov.communal.exception.ValidationException;
-import com.gov.communal.service.LocalizedMessageService;
+import com.gov.communal.service.i18n.LocalizedMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

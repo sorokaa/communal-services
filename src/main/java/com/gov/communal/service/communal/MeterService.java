@@ -1,4 +1,4 @@
-package com.gov.communal.service;
+package com.gov.communal.service.communal;
 
 import com.gov.communal.exception.ValidationException;
 import com.gov.communal.model.auth.client.dto.ClientDto;
@@ -11,6 +11,7 @@ import com.gov.communal.model.meter.mapper.MeterMapper;
 import com.gov.communal.model.meter.request.CreateMeterRequest;
 import com.gov.communal.repository.MeterRepository;
 import com.gov.communal.security.SecurityUtil;
+import com.gov.communal.service.user.ClientService;
 import com.gov.communal.util.error.ValidationErrorCode;
 import com.gov.communal.util.export.LoanExportHelper;
 import com.gov.communal.util.validator.MeterValidator;

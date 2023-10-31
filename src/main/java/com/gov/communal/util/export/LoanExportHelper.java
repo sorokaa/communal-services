@@ -5,7 +5,7 @@ import com.gov.communal.model.meter.dto.MeterPaymentResponse;
 import com.gov.communal.model.meter.dto.Payment;
 import com.gov.communal.model.meter.enumeration.Communal;
 import com.gov.communal.model.meter.enumeration.ExportTextCode;
-import com.gov.communal.service.LocalizedMessageService;
+import com.gov.communal.service.i18n.LocalizedMessageService;
 import com.lowagie.text.Font;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;

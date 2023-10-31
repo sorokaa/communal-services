@@ -1,4 +1,4 @@
-package com.gov.communal.service;
+package com.gov.communal.service.user;
 
 import com.gov.communal.exception.ValidationException;
 import com.gov.communal.model.auth.client.dto.ClientDto;

@@ -5,7 +5,7 @@ import com.gov.communal.model.auth.client.request.CreateUserRequest;
 import com.gov.communal.model.dictionary.dto.CityDto;
 import com.gov.communal.model.dictionary.dto.StreetDto;
 import com.gov.communal.repository.ClientRepository;
-import com.gov.communal.service.DictionaryService;
+import com.gov.communal.service.dictionary.DictionaryService;
 import com.gov.communal.util.error.ValidationErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

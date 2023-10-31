@@ -1,9 +1,11 @@
-package com.gov.communal.service;
+package com.gov.communal.service.communal;
 
 import com.gov.communal.model.price.common.dto.PriceDto;
 import com.gov.communal.model.price.common.dto.PriceStatisticDto;
 import com.gov.communal.model.price.electricity.dto.ElectricityPriceDto;
 import com.gov.communal.model.price.gas.dto.GasPriceDto;
+import com.gov.communal.service.communal.ElectricityPriceService;
+import com.gov.communal.service.communal.GasPriceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.gov.communal.service;
+package com.gov.communal.service.auth;
 
 import com.gov.communal.model.auth.keycloak.CreateKcUserRequest;
 import com.gov.communal.model.auth.keycloak.mapper.KeycloakMapper;
